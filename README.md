@@ -10,7 +10,7 @@ Projeto iniciado com a IDE [Netbeans](https://netbeans.org/)
 
 1) Use o diagrama abaixo para fazer as demais questões do trabalho:
 
-![alt text](http://www.devmedia.com.br/Imagens/gold/SQL/36/ooemjava/imagem2.JPG)
+![Alt text](/../master/screenshot/imgExercicio.PNG?raw=true "Optional Title")
 
 2) Use a estrutura de pacotes utilizada em aulas anteriores
 
