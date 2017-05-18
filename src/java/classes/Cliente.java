@@ -5,6 +5,9 @@
  */
 package classes;
 
+import dao.ClienteDAO;
+import java.util.List;
+
 /**
  *
  * @author marcos
@@ -56,6 +59,23 @@ public class Cliente {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+    
+    
+    public List<Cliente> listar(){
+        return ClienteDAO.getLista();
+    }
+    
+    public boolean cadastrar() {
+        return ClienteDAO.cadastrar(this);
+    }
+        
+    public boolean excluir(){
+        return ClienteDAO.remover(this);
+    }
+    
+    public boolean atualizar(){
+        return ClienteDAO.atualizar(this);
     }
 
 }
