@@ -16,7 +16,8 @@ public class ConnectionFactory {
         try {
            Class.forName("org.sqlite.JDBC");
            String urlBD="jdbc:sqlite:src\\bd\\BancoDeDados.sqlite";
-           return DriverManager.getConnection(urlBD);
+           System.out.println("Conexao estabelecida");
+           return DriverManager.getConnection(urlBD);           
         } catch (SQLException e) {
             System.out.println("Exceção SQL - ConnectionFactory");
         } catch(ClassNotFoundException e){
