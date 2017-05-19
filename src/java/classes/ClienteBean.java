@@ -5,10 +5,11 @@
  */
 package classes;
 
-import java.io.Serializable;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -16,7 +17,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class ClienteBean implements Serializable {
+public class ClienteBean {
 
     private Cliente client = new Cliente();
     private List<Cliente> clients;
@@ -30,34 +31,36 @@ public class ClienteBean implements Serializable {
     }
 
     public List<Cliente> getClients() {
-         if(clients == null)
-           return client.listar();
+        if (clients == null) {
+            return client.listar();
+        }
         return clients;
     }
 
-     public String atualizar(Cliente client){
+    public String atualizar(Cliente client) {
         System.out.println("Entrou no atualizar!!");
         client.atualizar();
         client.listar();
-        return "listar";
+        return "listar-clientes";
     }
-    
+
     public String cadastrar() {
         System.out.println("Entrou no cadastrar!!");
         client.cadastrar();
         client.listar();
-        return "listar";
+        return "listar-clientes";
     }
-    public String excluir(Cliente client){
+
+    public String excluir(Cliente client) {
         System.out.println("Entrou no excluir!!");
         client.excluir();
         clients = client.listar();
-        return "listar";
+        return "listar-clientes";
     }
-    
-    public String editar(Cliente client){
-         System.out.println("Entrou no editar!!");
+
+    public String editar(Cliente client) {
+        System.out.println("Entrou no editar!!");
         this.client = client;
-        return "editar";
+        return "editar-cliente";
     }
 }

@@ -21,7 +21,6 @@
 
         <h:body>
             <ui:include src="/includes/menubar.xhtml" />
-
             <div class="container">
                 <div class="section">
                     <div class="row">
@@ -53,7 +52,7 @@
                             </div>
                             <p:growl id="growl" life="2000" />
 
-                            <p:commandLink id="ajax" update="growl" actionListener="#{clienteBean.cadastrar()}">
+                            <p:commandLink id="ajax" update="growl" actionListener="#{clienteBean.cadastrar()}" class="waves-effect waves-light btn">
                                 <h:outputText value="Cadastrar" />
                             </p:commandLink>
                         </h:form>

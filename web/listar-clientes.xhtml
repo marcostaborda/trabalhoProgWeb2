@@ -3,6 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
       >
 
     <f:view contentType="text/html">
@@ -15,12 +16,38 @@
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
                 <!--Let browser know website is optimized for mobile-->
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                <style>
+                    .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
+                        border-style: none;
+                    }
+                </style>
             </f:facet>
         </h:head>
 
         <h:body>
             <ui:include src="/includes/menubar.xhtml" />
-            
+            <h:form id="frm">
+                <p:messages id="teste" />
+                <p:dataTable value="#{clienteBean.clients}" var="client"
+                             rows="2" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="true" 
+                             >
+                    <f:facet name="header">
+                        Lista de clientes
+                    </f:facet>
+                    <p:column headerText="Nome" style="text-align: center" width="90" sortBy="#{client.nome}">
+                        <p:commandButton action="#{clienteBean.editar(client)}" value="#{client.nome}"  ajax="false"/>
+                    </p:column>
+                    <p:column headerText="Telefone" width="180" style="text-align: center" sortBy="#{client.telefone}">
+                        <h:outputText value="#{client.telefone}"/>
+                    </p:column>
+                    <p:column headerText="Endereço" width="140" style="text-align: right" sortBy="#{client.endereco}">
+                        <h:outputText value="#{client.endereco}" />
+                    </p:column>
+
+                </p:dataTable>
+                 <h:messages id="messages" globalOnly="true" layout="table" />     
+            </h:form>
             <script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
             <script type="text/javascript" src="assets/js/materialize.min.js"></script>
             <script type="text/javascript" src="assets/js/scripts.js"></script>
