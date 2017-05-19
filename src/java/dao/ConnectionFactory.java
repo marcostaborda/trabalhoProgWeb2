@@ -15,7 +15,7 @@ public class ConnectionFactory {
     public Connection getConnection() {
         try {
            Class.forName("org.sqlite.JDBC");
-           String urlBD="jdbc:sqlite:src\\bd\\BancoDeDados2.sqlite";
+           String urlBD="jdbc:sqlite:C:/db/BancoDeDados2.sqlite";
            System.out.println("Conexao estabelecida");
            return DriverManager.getConnection(urlBD);           
         } catch (SQLException e) {
