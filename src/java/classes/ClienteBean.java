@@ -42,8 +42,16 @@ public class ClienteBean {
         return "listar-clientes";
     }
 
-    public String cadastrar() {
+    public String pageAdicionarClientes() {
         System.out.println("Entrou no cadastrar!!");
+        client = new Cliente();
+        return "cadastro-cliente";
+    }
+    public String pageListarClientes(){
+        return "listar-clientes";
+    }
+    public String cadastrar() {
+        System.out.println("Entrou no cadastrar banco!!");
         client.cadastrar();
         client.listar();
         return "listar-clientes";

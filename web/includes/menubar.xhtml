@@ -9,38 +9,40 @@
             box-shadow: none;
         }
     </style>
-    <!-- Dropdown Structure -->
-    <ul id="dropdown1" class="dropdown-content" style="margin-top: 60px; margin-left:20px;">
-        <li><a href="cadastro-cliente.xhtml">Adicionar</a></li>
-        <li><a href="listar-clientes.xhtml">Listar</a></li>
-    </ul>
-    <ul id="dropdown2" class="dropdown-content" style="margin-top: 60px; margin-left:20px;">
-        <li><a href="cadastro-cidade.xhtml">Adicionar</a></li>
-        <li><a href="listar-cidades.xhtml">Listar</a></li>
-    </ul>
-    <nav class="light-blue lighten-1 top-nav">
-        <div class="nav-wrapper container">
-            <a href="#" class="brand-logo right">IFRS</a>
-            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-            <ul class="left  hide-on-med-and-down">
-                <!-- Dropdown Trigger -->
-                <li><a class="dropdown-button" href="#!" data-activates="dropdown1" style="font-size: 1.2rem;">Clientes<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-button" href="#!" data-activates="dropdown2" style="font-size: 1.2rem;">Cidades<i class="material-icons right">arrow_drop_down</i></a></li>
-            </ul>
-            <ul class="side-nav" id="mobile-demo" style="width: 180px;">
-                <li>
-                    <a class="dropdown-button" data-activates="mobile_menu_client" data-beloworigin="true" href="javascript:;">Clientes<i class="material-icons right">arrow_drop_down</i></a>
-                    <a class="dropdown-button" data-activates="mobile_menu_city" data-beloworigin="true" href="javascript:;">Cidades<i class="material-icons right">arrow_drop_down</i></a>
-                    <ul id="mobile_menu_client" class="dropdown-content">
-                        <li><a href="cadastro-cliente.xhtml" style="margin-left: 30px;">Adicionar</a></li>
-                        <li><a href="listar-clientes.xhtml" style="margin-left: 30px;">Listar</a></li>
-                    </ul>
-                    <ul id="mobile_menu_city" class="dropdown-content">
-                        <li><a href="cadastro-cidade.xhtml" style="margin-left: 30px;">Adicionar</a></li>
-                        <li><a href="listar-cidades.xhtml" style="margin-left: 30px;">Listar</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <h:form id="cadastra-cliente">
+        <!-- Dropdown Structure -->
+        <ul id="dropdown1" class="dropdown-content" style="margin-top: 60px; margin-left:20px;">
+            <li><p:commandLink action="#{clienteBean.pageAdicionarClientes}" value="Adicionar" /></li>
+            <li><p:commandLink action="#{clienteBean.pageListarClientes}" value="Listar" /></li>
+        </ul>
+        <ul id="dropdown2" class="dropdown-content" style="margin-top: 60px; margin-left:20px;">
+            <li><a href="cadastro-cidade.xhtml">Adicionar</a></li>
+            <li><a href="listar-cidades.xhtml">Listar</a></li>
+        </ul>
+        <nav class="light-blue lighten-1 top-nav">
+            <div class="nav-wrapper container">
+                <a href="index.xhtml" class="brand-logo right">IFRS</a>
+                <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+                <ul class="left  hide-on-med-and-down">
+                    <!-- Dropdown Trigger -->
+                    <li><a class="dropdown-button" href="#!" data-activates="dropdown1" style="font-size: 1.2rem;">Clientes<i class="material-icons right">arrow_drop_down</i></a></li>
+                    <li><a class="dropdown-button" href="#!" data-activates="dropdown2" style="font-size: 1.2rem;">Cidades<i class="material-icons right">arrow_drop_down</i></a></li>
+                </ul>
+                <ul class="side-nav" id="mobile-demo" style="width: 180px;">
+                    <li>
+                        <a class="dropdown-button" data-activates="mobile_menu_client" data-beloworigin="true" href="javascript:;">Clientes<i class="material-icons right">arrow_drop_down</i></a>
+                        <a class="dropdown-button" data-activates="mobile_menu_city" data-beloworigin="true" href="javascript:;">Cidades<i class="material-icons right">arrow_drop_down</i></a>
+                        <ul id="mobile_menu_client" class="dropdown-content">
+                            <li><p:commandLink action="#{clienteBean.pageAdicionarClientes}" value="Adicionar" style="margin-left: 30px;"/></li>
+                            <li><p:commandLink action="#{clienteBean.pageListarClientes}" value="Listar" style="margin-left: 30px;"/></li>
+                        </ul>
+                        <ul id="mobile_menu_city" class="dropdown-content">
+                            <li><a href="cadastro-cidade.xhtml" style="margin-left: 30px;">Adicionar</a></li>
+                            <li><a href="listar-cidades.xhtml" style="margin-left: 30px;">Listar</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </h:form>
 </ui:composition>
