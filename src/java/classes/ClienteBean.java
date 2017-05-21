@@ -6,6 +6,7 @@
 package classes;
 
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -19,6 +20,25 @@ public class ClienteBean {
 
     private Cliente client = new Cliente();
     private List<Cliente> clients;
+
+    private Cliente clienteSelecionado;
+
+    public Cliente getClienteSelecionado() {
+        return clienteSelecionado;
+    }
+
+    public void setClienteSelecionado(Cliente clienteSelecionado) {
+        this.clienteSelecionado = clienteSelecionado;
+    }
+
+    public void limparSelecao() {
+        this.setClienteSelecionado(null);
+    }
+
+    @PostConstruct
+    public void construct() {
+        clients = client.listar();
+    }
 
     public Cliente getClient() {
         return client;
@@ -42,14 +62,6 @@ public class ClienteBean {
         return "listar-clientes";
     }
 
-    public String pageAdicionarClientes() {
-        System.out.println("Entrou no cadastrar!!");
-        client = new Cliente();
-        return "cadastro-cliente";
-    }
-    public String pageListarClientes(){
-        return "listar-clientes";
-    }
     public String cadastrar() {
         System.out.println("Entrou no cadastrar banco!!");
         client.cadastrar();
@@ -62,11 +74,5 @@ public class ClienteBean {
         client.excluir();
         clients = client.listar();
         return "listar-clientes";
-    }
-
-    public String editar(Cliente client) {
-        System.out.println("Entrou no editar!!");
-        this.client = client;
-        return "editar-cliente";
     }
 }

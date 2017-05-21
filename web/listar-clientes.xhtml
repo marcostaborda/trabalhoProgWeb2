@@ -26,29 +26,84 @@
 
         <h:body>
             <ui:include src="/includes/menubar.xhtml" />
-            <h:form id="frm">
-                <p:messages id="teste" />
-                <p:dataTable value="#{clienteBean.clients}" var="client"
-                             rows="2" paginator="true" paginatorPosition="bottom"
-                             paginatorAlwaysVisible="true" 
-                             >
-                    <f:facet name="header">
-                        Lista de clientes
-                    </f:facet>
-                    <p:column headerText="Nome" style="text-align: center" width="90" sortBy="#{client.nome}">
-                        <p:commandButton action="#{clienteBean.editar(client)}" value="#{client.nome}"  ajax="false"/>
-                    </p:column>
-                    <p:column headerText="Telefone" width="180" style="text-align: center" sortBy="#{client.telefone}">
-                        <h:outputText value="#{client.telefone}"/>
-                    </p:column>
-                    <p:column headerText="Endereço" width="140" style="text-align: right" sortBy="#{client.endereco}">
-                        <h:outputText value="#{client.endereco}" />
-                    </p:column>
+            <br/><br/>
+            <div class="container">
+                <div class="section">
+                    <div class="row">
+                        <h:form id="master">
+                            <p:growl id="msgs" showDetail="true" />
+                            <p:dataTable value="#{clienteBean.clients}" var="client"
+                                         rows="2" paginator="true" paginatorPosition="bottom"
+                                         paginatorAlwaysVisible="true" styleClass="ui-g-12 ui-md-12"
+                                         >
+                                <f:facet name="header">
+                                    Lista de clientes
+                                </f:facet>
+                                <p:column headerText="Nome" style="text-align: center" width="160"  sortBy="#{client.nome}">
+                                    <h:outputText value="#{client.nome}"/>
+                                </p:column>
+                                <p:column headerText="Telefone" width="160" style="text-align: center" sortBy="#{client.telefone}">
+                                    <h:outputText value="#{client.telefone}"/>
+                                </p:column>
+                                <p:column headerText="Endereço" style="text-align: center" width="160" sortBy="#{client.endereco}">
+                                    <h:outputText value="#{client.endereco}"/>
+                                </p:column>
+                                <p:column style="width:60px;text-align: center">
+                                    <p:commandLink update="outPanel" oncomplete="PF('outpanel').show()" title="Editar usuário">
+                                        <i class="material-icons">edit</i>
+                                        <f:setPropertyActionListener value="#{client}" target="#{clienteBean.clienteSelecionado}" />
+                                    </p:commandLink>
 
-                </p:dataTable>
-                 <h:messages id="messages" globalOnly="true" layout="table" />     
-            </h:form>
-            <script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
+                                    <p:commandLink update="abrirForm" oncomplete="PF('userDialog').show();" title="Deletar usuário">
+                                        <i class="material-icons">delete</i>
+                                        <f:setPropertyActionListener value="#{client}" target="#{clienteBean.clienteSelecionado}" />
+                                    </p:commandLink>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                        <p:dialog header="Deletar Usuário" widgetVar="userDialog" id="abrirForm" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <h:form>
+                                <p:outputPanel id="userDetail" style="text-align:center;">
+                                    <p:panelGrid  columns="2" rendered="#{not empty clienteBean.clienteSelecionado}" columnClasses="label,value">
+                                        <h:outputText value="Nome:" />
+                                        <h:outputText value="#{clienteBean.clienteSelecionado.nome}" />
+                                        <p:commandLink actionListener="#{clienteBean.limparSelecao}" oncomplete="PF('userDialog').hide()" styleClass="waves-effect waves-light btn" style="color:white;margin-right: 10px;" value="Cancelar"/>
+                                        <p:commandLink id="ajax" update="master" actionListener="#{clienteBean.excluir(clienteBean.clienteSelecionado)}" styleClass="waves-effect waves-light btn" style="color:white" value="Deletar" oncomplete="PF('userDialog').hide()" />
+                                    </p:panelGrid>
+                                </p:outputPanel>
+                            </h:form>
+                        </p:dialog>
+                        <p:panel id="outPanel" widgetVar="outpanel" visible="false" closable="true" toggleable="true" styleClass="ui-g-12 ui-md-8">
+                            <h:form>
+                                <p:outputPanel id="userDetail" style="text-align:center;">
+                                    <p:panel rendered="#{not empty clienteBean.clienteSelecionado}" >
+                                        <h5 class="align-certer">Editar usuário </h5>
+                                        <div class="row">
+                                            <div class="input-field col s6">
+                                                <p:inputText id="nome" value="#{clienteBean.clienteSelecionado.nome}" required="true" label="nome" styleClass="validate" /> 
+                                                <h:outputLabel value="Nome" for="nome" styleClass="active"/>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <p:inputMask id="telefone" value="#{clienteBean.clienteSelecionado.telefone}" mask="(99) 999999999" required="true" />
+                                                <h:outputLabel value="Telefone" for="telefone" styleClass="active"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <p:inputText id="endereco" value="#{clienteBean.clienteSelecionado.endereco}" required="true" label="endereco" styleClass="validate" /> 
+                                                <h:outputLabel value="Endereço" for="endereco" styleClass="active"/>
+                                            </div>
+                                        </div>
+
+                                        <p:commandLink actionListener="#{clienteBean.limparSelecao}" oncomplete="PF('outpanel').close()" styleClass="waves-effect waves-light btn" style="color:white;margin-right: 10px;" value="Cancelar" update="outPanel"/>
+                                        <p:commandLink id="ajax" update="master" actionListener="#{clienteBean.atualizar(clienteBean.clienteSelecionado)}" styleClass="waves-effect waves-light btn" style="color:white" value="Atualizar" oncomplete="PF('outpanel').close()" />
+                                    </p:panel>
+                                </p:outputPanel>
+                            </h:form>
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
             <script type="text/javascript" src="assets/js/materialize.min.js"></script>
             <script type="text/javascript" src="assets/js/scripts.js"></script>
         </h:body>

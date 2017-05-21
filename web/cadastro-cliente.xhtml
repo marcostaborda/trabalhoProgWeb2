@@ -30,17 +30,17 @@
                             <div class="row">
                                 <div class="input-field col s6">
                                     <p:inputText id="nome" value="#{clienteBean.client.nome}" required="true" label="nome" styleClass="validate" /> 
-                                    <p:outputLabel value="Nome" for="nome"/>
+                                    <h:outputLabel value="Nome" for="nome"/>
                                 </div>
                                 <div class="input-field col s6">
                                     <p:inputMask id="telefone" value="#{clienteBean.client.telefone}" mask="(99) 999999999" required="true"/>
-                                    <p:outputLabel value="Telefone" for="telefone"/>
+                                    <h:outputLabel value="Telefone" for="telefone"/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
                                     <p:inputText id="endereco" value="#{clienteBean.client.endereco}" required="true" label="endereco" styleClass="validate" /> 
-                                    <p:outputLabel value="Endereço" for="endereco"/>
+                                    <h:outputLabel value="Endereço" for="endereco"/>
                                 </div>
                             </div>
                             <p:growl id="growl" showDetail="false" sticky="true" />  
