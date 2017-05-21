@@ -24,31 +24,31 @@
             <div class="container">
                 <div class="section">
                     <div class="row">
-                        <h3>Cadastro Cliente</h3>
+                        <h3>Cadastro Cidade</h3>
                         <br/><br/>
                         <h:form id="cadastrar-cliente">
+                            <p:growl id="growl" sticky="true" />  
                             <div class="row">
                                 <div class="input-field col s6">
                                     <p:inputText id="nome" value="#{cidadeBean.cidade.nome}" required="true" label="nome" styleClass="validate" /> 
                                     <h:outputLabel value="Nome" for="nome"/>
                                 </div>
                                 <div class="input-field col s6">
-                                    <p:inputMask id="distancia" value="#{cidadeBean.cidade.distancia}" mask="999999999" required="true"/>
-                                    <h:outputLabel value="Distancia" for="distancia"/>
+                                    <p:inputNumber id="distancia" value="#{cidadeBean.cidade.distancia}" minValue="1" maxValue="60000" required="true" label="distancia"  inputStyleClass="validade"/>
+                                    <h:outputLabel value="Distancia" for="distancia" styleClass="active"/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <p:inputText id="Estado" value="#{cidadeBean.cidade.estado}" required="true" styleClass="validate" /> 
-                                    <h:outputLabel value="Estado" for="Estado"/>
+                                    <p:inputText id="estado" value="#{cidadeBean.cidade.estado}" required="true" styleClass="validate" label="estado" /> 
+                                    <h:outputLabel value="Estado" for="estado"/>
                                 </div>
                             </div>
-                            <p:commandLink id="ajax" actionListener="#{cidadeBean.cadastrar()}" class="waves-effect waves-light btn" value="Cadastrar" />
+                            <p:commandLink id="ajax" actionListener="#{cidadeBean.cadastrar()}" class="waves-effect waves-light btn" value="Cadastrar" update="growl" />
                         </h:form>
                     </div>
                 </div>
             </div>
-            <script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
             <script type="text/javascript" src="assets/js/materialize.min.js"></script>
             <script type="text/javascript" src="assets/js/scripts.js"></script>
         </h:body>
