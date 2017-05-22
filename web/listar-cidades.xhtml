@@ -21,7 +21,128 @@
 
         <h:body>
             <ui:include src="/includes/menubar.xhtml" />
-            <p:messages />
+            <br/><br/>
+            <div class="container">
+                <div class="section">
+                    <div class="row">
+                        <h:form id="masterCidades">
+                            <p:growl id="msgs" showDetail="true" />
+                            <p:dataGrid value="#{cidadeBean.cidades}" var="cidade" paginator="true" columns="2" rows="2" paginatorPosition="bottom" styleClass="ui-g-12 ui-md-12" layout="grid">
+                                <f:facet name="header">
+                                    Lista de cidades
+                                </f:facet>
+                                <div class="row">
+                                    <div class="col s12 m12">
+                                        <div class="card hoverable">
+                                            <div class="card-content">
+                                                <span class="card-title activator grey-text text-darken-4"> #{cidade.nome} -
+                                                    #{cidade.estado} <br/>
+                                                    #{cidade.distancia}(Km)
+                                                </span>
+                                            </div>
+                                            <div class="card-action">
+                                                <p:commandLink update="outPanel" oncomplete="PF('outpanel').show()" title="Editar Cidade">
+                                                    <i class="material-icons">edit</i>
+                                                    <f:setPropertyActionListener value="#{cidade}" target="#{cidadeBean.cidadeSelecionado}" />
+                                                </p:commandLink>
+
+                                                <p:commandLink update="abrirForm" oncomplete="PF('userDialog').show();PF('outpanel').close()" title="Deletar Cidade">
+                                                    <i class="material-icons">delete</i>
+                                                    <f:setPropertyActionListener value="#{cidade}" target="#{cidadeBean.cidadeSelecionado}" />
+                                                </p:commandLink>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </p:dataGrid >
+
+                        </h:form>
+                        <p:dialog header="Deletar Cidade" widgetVar="userDialog" id="abrirForm" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <h:form>
+                                <p:outputPanel id="cidadeDetalhe" style="text-align:center;">
+                                    <p:panelGrid  columns="2" rendered="#{not empty cidadeBean.cidadeSelecionado}" columnClasses="label,value">
+                                        <h:outputText value="Nome:" />
+                                        <h:outputText value="#{cidadeBean.cidadeSelecionado.nome}" />
+                                        <p:commandLink actionListener="#{cidadeBean.limparSelecao}" oncomplete="PF('userDialog').hide()" styleClass="waves-effect waves-light btn" style="color:white;margin-right: 10px;" value="Cancelar"/>
+                                        <p:commandLink id="ajax" update="masterCidades" actionListener="#{cidadeBean.excluir(cidadeBean.cidadeSelecionado)}" styleClass="waves-effect waves-light btn" style="color:white" value="Deletar" oncomplete="PF('userDialog').hide()" />
+                                    </p:panelGrid>
+                                </p:outputPanel>
+                            </h:form>
+                        </p:dialog>
+                        <p:panel id="outPanel" widgetVar="outpanel" visible="false" closable="true" toggleable="true" styleClass="ui-g-12 ui-md-8">
+                            <h:form>
+                                <p:outputPanel id="editarCidade" style="text-align:center;">
+                                    <p:panel rendered="#{not empty cidadeBean.cidadeSelecionado}" >
+                                        <h5 class="align-certer">Editar Cidade </h5>
+                                        <div class="row">
+                                            <div class="input-field col s6">
+                                                <p:inputText id="nome" value="#{cidadeBean.cidadeSelecionado.nome}" required="true" label="nome" styleClass="validate" /> 
+                                                <h:outputLabel value="Nome" for="nome" styleClass="active"/>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <p:inputNumber id="distancia" value="#{cidadeBean.cidadeSelecionado.distancia}" minValue="1" maxValue="99999999" required="true" label="distancia"  inputStyleClass="validade" emptyValue="1"  thousandSeparator="." decimalSeparator="," />
+                                                <h:outputLabel value="Distancia(Km)" for="distancia" styleClass="active"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <p:inputText id="estado" value="#{cidadeBean.cidadeSelecionado.estado}" required="true" label="estado" styleClass="validate" /> 
+                                                <h:outputLabel value="Estado" for="estado" styleClass="active"/>
+                                            </div>
+                                        </div>
+
+                                        <p:commandLink actionListener="#{cidadeBean.limparSelecao}" oncomplete="PF('outpanel').close()" styleClass="waves-effect waves-light btn" style="color:white;margin-right: 10px;" value="Cancelar" update="outPanel"/>
+                                        <p:commandLink id="ajax" update="masterCidades" actionListener="#{cidadeBean.atualizar(cidadeBean.cidadeSelecionado)}" styleClass="waves-effect waves-light btn" style="color:white" value="Atualizar" oncomplete="PF('outpanel').close()" />
+                                    </p:panel>
+                                </p:outputPanel>
+                            </h:form>
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-blue-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </p:dialog>
+            <div class="fixed-action-btn">
+                <p:commandLink oncomplete="PF('addCidade').show();PF('outpanel').close()" styleClass="btn-floating red">
+                    <i class="material-icons">add</i>
+                </p:commandLink>
+            </div>
+            <p:dialog widgetVar="addCidade" id="formadd" modal="true" showEffect="fade" hideEffect="fade" resizable="false" >
+                <h:form id="cadastrar-cidade">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <p:inputText id="nome" value="#{cidadeBean.cidade.nome}" required="true" label="nome" styleClass="validate" /> 
+                            <h:outputLabel value="Nome" for="nome"/>
+                        </div>
+                        <div class="input-field col s6">
+                            <p:inputNumber id="distancia" value="#{cidadeBean.cidade.distancia}" minValue="1" maxValue="9999999" required="true" label="distancia"  inputStyleClass="validade" emptyValue="1"  thousandSeparator="." decimalSeparator="," />
+                            <h:outputLabel value="Distancia" for="distancia" styleClass="active"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <p:inputText id="estado" value="#{cidadeBean.cidade.estado}" required="true" styleClass="validate" label="estado" /> 
+                            <h:outputLabel value="Estado" for="estado"/>
+                        </div>
+                    </div>
+                    <p:commandLink id="ajax" actionListener="#{cidadeBean.cadastrar}" class="waves-effect waves-light btn" value="Cadastrar" update="masterCidades" oncomplete="PF('addCidade').hide();" />
+                </h:form>
+            </p:dialog>
             <script type="text/javascript" src="assets/js/materialize.min.js"></script>
             <script type="text/javascript" src="assets/js/scripts.js"></script>
         </h:body>

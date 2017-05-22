@@ -67,7 +67,6 @@ public class CidadeBean {
         Flash flash = getCurrentInstance().getExternalContext().getFlash();
         flash.setKeepMessages(true);
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cidade atualizada com sucesso", null));
-        cidade.listar();
     }
 
     public String cadastrar() {
@@ -88,7 +87,6 @@ public class CidadeBean {
         Flash flash = getCurrentInstance().getExternalContext().getFlash();
         flash.setKeepMessages(true);
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cidade excluida com sucesso", null));
-        cidade.listar();
         cidades = cidade.listar();
     }
 }

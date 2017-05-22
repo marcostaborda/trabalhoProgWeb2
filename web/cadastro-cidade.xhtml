@@ -34,7 +34,7 @@
                                     <h:outputLabel value="Nome" for="nome"/>
                                 </div>
                                 <div class="input-field col s6">
-                                    <p:inputNumber id="distancia" value="#{cidadeBean.cidade.distancia}" minValue="1" maxValue="60000" required="true" label="distancia"  inputStyleClass="validade"/>
+                                    <p:inputNumber id="distancia" value="#{cidadeBean.cidade.distancia}" minValue="1" maxValue="9999999" required="true" label="distancia"  inputStyleClass="validade" emptyValue="1"  thousandSeparator="." decimalSeparator="," />
                                     <h:outputLabel value="Distancia" for="distancia" styleClass="active"/>
                                 </div>
                             </div>
