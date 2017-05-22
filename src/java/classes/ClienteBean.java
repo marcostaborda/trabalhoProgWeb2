@@ -7,8 +7,12 @@ package classes;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import static javax.faces.context.FacesContext.getCurrentInstance;
+import javax.faces.context.Flash;
 
 /**
  *
@@ -55,24 +59,34 @@ public class ClienteBean {
         return clients;
     }
 
-    public String atualizar(Cliente client) {
+    public void atualizar(Cliente client) {
         System.out.println("Entrou no atualizar!!");
         client.atualizar();
         client.listar();
-        return "listar-clientes";
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = getCurrentInstance().getExternalContext().getFlash();
+        flash.setKeepMessages(true);
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente atualizado com sucesso", null));
     }
 
     public String cadastrar() {
         System.out.println("Entrou no cadastrar banco!!");
         client.cadastrar();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = getCurrentInstance().getExternalContext().getFlash();
+        flash.setKeepMessages(true);
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente cadastrado com sucesso", null));
         client.listar();
-        return "listar-clientes";
+        return "listar-clientes?faces-redirect=true";
     }
 
-    public String excluir(Cliente client) {
+    public void excluir(Cliente client) {
         System.out.println("Entrou no excluir!!");
         client.excluir();
         clients = client.listar();
-        return "listar-clientes";
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = getCurrentInstance().getExternalContext().getFlash();
+        flash.setKeepMessages(true);
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente excluido com sucesso", null));
     }
 }

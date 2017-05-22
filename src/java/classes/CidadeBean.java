@@ -7,8 +7,12 @@ package classes;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import static javax.faces.context.FacesContext.getCurrentInstance;
+import javax.faces.context.Flash;
 
 /**
  *
@@ -17,6 +21,7 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 public class CidadeBean {
+
     private Cidade cidade = new Cidade();
     private List<Cidade> cidades;
 
@@ -54,24 +59,36 @@ public class CidadeBean {
         return cidades;
     }
 
-    public String atualizar(Cidade cidade) {
+    public void atualizar(Cidade cidade) {
         System.out.println("Entrou no atualizar!!");
         cidade.atualizar();
         cidade.listar();
-        return "listar-cidades";
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = getCurrentInstance().getExternalContext().getFlash();
+        flash.setKeepMessages(true);
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cidade atualizada com sucesso", null));
+        cidade.listar();
     }
 
     public String cadastrar() {
         System.out.println("Entrou no cadastrar banco!!");
         cidade.cadastrar();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = getCurrentInstance().getExternalContext().getFlash();
+        flash.setKeepMessages(true);
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cidade cadastrada com sucesso", null));
         cidade.listar();
-        return "listar-cidades";
+        return "listar-cidades?faces-redirect=true";
     }
 
-    public String excluir(Cidade cidade) {
+    public void excluir(Cidade cidade) {
         System.out.println("Entrou no excluir!!");
         cidade.excluir();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = getCurrentInstance().getExternalContext().getFlash();
+        flash.setKeepMessages(true);
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cidade excluida com sucesso", null));
+        cidade.listar();
         cidades = cidade.listar();
-        return "listar-cidades";
     }
 }
