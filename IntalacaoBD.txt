@@ -1,0 +1,4 @@
+O banco de dados se encontra na pasta src\bd\BancoDeDados2.sqlite
+Tem que ser criado uma pasta chamada C:\db
+E copiar o arquivo do para a mesma.
+Ou então configuarar a conexão na classe ConnectionFactory, que fica dentro do pacote DAO.
