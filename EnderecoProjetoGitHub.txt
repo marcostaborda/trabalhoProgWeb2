@@ -1,0 +1,11 @@
+Compartilhei no github. Pois tem um limite de postagem e como ficou com 35mb o projeto porque coloquei as libs juntas.
+O link do git hub:
+https://github.com/marcostaborda/trabalhoProgWeb2.git
+
+Compartilhei como publico. 
+
+----------------------------------------------------------------
+O banco de dados se encontra na pasta src\bd\BancoDeDados2.sqlite
+Tem que ser criado uma pasta chamada C:\db
+E copiar o arquivo do para a mesma.
+Ou então configuarar a conexão na classe ConnectionFactory, que fica dentro do pacote DAO.

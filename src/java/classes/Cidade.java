@@ -6,14 +6,24 @@
 package classes;
 
 import dao.CidadeDAO;
+import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  *
  * @author marcos
  */
-public class Cidade {
-
+@Entity
+public class Cidade implements Serializable {
+     private static final long serialVersionUID = 1L;
+    @Id
+    @Column (name="idCidade")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCidade;
     private String nome;
     private String estado;
@@ -62,19 +72,19 @@ public class Cidade {
     }
     
     public List<Cidade> listar(){
-        return CidadeDAO.getLista();
+        return new CidadeDAO().getLista();
     }
     
     public boolean cadastrar() {
-        return CidadeDAO.cadastrar(this);
+        return new CidadeDAO().cadastrar(this);
     }
         
     public boolean excluir(){
-        return CidadeDAO.remover(this);
+        return new CidadeDAO().remover(this);
     }
     
     public boolean atualizar(){
-        return CidadeDAO.atualizar(this);
+        return new CidadeDAO().atualizar(this);
     }
 
 

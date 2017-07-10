@@ -21,7 +21,7 @@ import javax.faces.context.Flash;
 @ManagedBean
 @ViewScoped
 public class ClienteBean {
-
+    private static final long serialVersionUID = 1L;
     private Cliente client = new Cliente();
     private List<Cliente> clients;
 

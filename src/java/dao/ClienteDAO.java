@@ -4,82 +4,59 @@
  * and open the template in the editor.
  */
 package dao;
-
 import classes.Cliente;
-import java.sql.*;
-import java.util.*;
+import classes.JPAUtil;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  *
  * @author marcos
  */
 public class ClienteDAO {
-
-    public static boolean cadastrar(Cliente client) {
-        try (Connection connection = new ConnectionFactory().getConnection();
-                PreparedStatement stmt
-                = connection.prepareStatement(ClientSQLs.INSERIR.getSql());) {
-            stmt.setString(1, client.getNome());
-            stmt.setString(2, client.getEndereco());
-            stmt.setString(3, client.getTelefone());
-            System.out.println("Dados Gravados!");
-            return stmt.execute();
-        } catch (SQLException e) {
-            System.out.println("exceção com recursos - cadastrar cliente");
-        }
+    private EntityManager em;
+    public boolean cadastrar(Cliente client) {
+        em = JPAUtil.getEntityManager();
+        em.getTransaction().begin();
+        em.persist(client);
+        em.getTransaction().commit();
+        em.close();
         return false;
     }
 
-    public static boolean remover(Cliente client) {
-        try (Connection connection = new ConnectionFactory().getConnection();
-                PreparedStatement stmt
-                = connection.prepareStatement(ClientSQLs.REMOVER.getSql());) {
-            stmt.setInt(1, client.getIdCliente());
-            stmt.execute();
-        } catch (SQLException e) {
-            System.out.println("exceção com recursos - remover");
+    public boolean remover(Cliente client) {
+        em = JPAUtil.getEntityManager();
+        em.getTransaction().begin();
+        Cliente entity = em.find(Cliente.class, client.getIdCliente());
+        if (entity != null) {
+            em.remove(entity);
+        } else {
+            System.out.println("Deu erro");
         }
+        em.getTransaction().commit();
+        em.close();
         return false;
     }
 
-    public static boolean atualizar(Cliente client) {
-        try (Connection connection = new ConnectionFactory().getConnection();
-                PreparedStatement stmt
-                = connection.prepareStatement(ClientSQLs.ATUALIZAR.getSql());) {
-            System.out.println("SQL = " + ClientSQLs.ATUALIZAR.getSql());
-            System.out.println("Conexão aberta!");
-            stmt.setString(1, client.getNome());
-            stmt.setString(2, client.getEndereco());
-            stmt.setString(3, client.getTelefone());
-            stmt.setInt(4, client.getIdCliente());
-            stmt.execute();
-        } catch (SQLException e) {
-            System.out.println("exceção com recursos - atualizar cliente");
-        }
+    public boolean atualizar(Cliente client) {
+        em = JPAUtil.getEntityManager();
+        em.getTransaction().begin();
+        em.merge(client);
+        em.getTransaction().commit();
+        em.close();
         return false;
     }
 
-    public static List<Cliente> getLista() {
-        List<Cliente> lista = new LinkedList<>();
-        try (Connection connection = new ConnectionFactory().getConnection();
-                PreparedStatement stmt
-                = connection.prepareStatement(ClientSQLs.LISTAR_TODOS.getSql());) {
-            System.out.println("Conexão aberta!");
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                int idCliente = rs.getInt("idCliente");
-                String nome = rs.getString("nome");
-                String endereco = rs.getString("endereco");
-                String telefone = rs.getString("telefone");
-                lista.add(new Cliente(idCliente, nome, endereco, telefone));
-            }
-            return lista;
-        } catch (SQLException e) {
-            System.out.println("Exceção SQL - Listar Excessão");
-        } catch (Exception e) {
-            System.out.println("Exceção no código!");
-        }
-        return null;
+    public List<Cliente> getLista() {
+        em = JPAUtil.getEntityManager();
+        TypedQuery<Cliente> query;
+        query = em.createQuery(
+                "SELECT p FROM Cliente p",
+                Cliente.class);
+        List<Cliente> clientes = query.getResultList();
+        em.close();
+        return clientes;
     }
 
 }

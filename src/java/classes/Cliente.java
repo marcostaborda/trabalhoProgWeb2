@@ -6,14 +6,24 @@
 package classes;
 
 import dao.ClienteDAO;
+import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  *
  * @author marcos
  */
-public class Cliente {
-
+@Entity
+public class Cliente implements Serializable {
+    
+    @Id
+    @Column (name="idCliente")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCliente;
     private String nome;
     private String endereco;
@@ -64,19 +74,19 @@ public class Cliente {
     
     
     public List<Cliente> listar(){
-        return ClienteDAO.getLista();
+        return new ClienteDAO().getLista();
     }
     
     public boolean cadastrar() {
-        return ClienteDAO.cadastrar(this);
+        return new ClienteDAO().cadastrar(this);
     }
         
     public boolean excluir(){
-        return ClienteDAO.remover(this);
+        return new ClienteDAO().remover(this);
     }
     
     public boolean atualizar(){
-        return ClienteDAO.atualizar(this);
+        return new ClienteDAO().atualizar(this);
     }
 
 }

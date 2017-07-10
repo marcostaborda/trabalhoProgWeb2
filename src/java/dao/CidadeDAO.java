@@ -6,82 +6,69 @@
 package dao;
 
 import classes.Cidade;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.LinkedList;
+import classes.JPAUtil;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  *
  * @author marcos
  */
 public class CidadeDAO {
-    public static boolean cadastrar(Cidade city) {
-        try (Connection connection = new ConnectionFactory().getConnection();
-                PreparedStatement stmt
-                = connection.prepareStatement(CidadeSQLs.INSERIR.getSql());) {
-            stmt.setString(1, city.getNome());
-            stmt.setString(2, city.getEstado());
-            stmt.setDouble(3, city.getDistancia());
-            System.out.println("Dados Gravados!");
-            return stmt.execute();
-        } catch (SQLException e) {
-            System.out.println("exceção com recursos - cadastrar cliente");
-        }
+    private EntityManager em;
+//    public List<Tarefa> pesquisarPorNome(String nome) {
+//        em = JPAUtil.getEntityManager();
+//        TypedQuery<Tarefa> query = em.createQuery(
+//                "SELECT p FROM Tarefa p "
+//                + "where lower(p.nome) like '%"
+//                + nome.toLowerCase() + "%'",
+//                Tarefa.class);
+//        List<Tarefa> tarefas = query.getResultList();
+//        em.close();
+//        return tarefas;
+//    }
+
+    public boolean cadastrar(Cidade city) {
+        em = JPAUtil.getEntityManager();
+        em.getTransaction().begin();
+        em.persist(city);
+        em.getTransaction().commit();
+        em.close();
         return false;
     }
 
-    public static boolean remover(Cidade city) {
-        try (Connection connection = new ConnectionFactory().getConnection();
-                PreparedStatement stmt
-                = connection.prepareStatement(CidadeSQLs.REMOVER.getSql());) {
-            stmt.setInt(1, city.getIdCidade());
-            stmt.execute();
-        } catch (SQLException e) {
-            System.out.println("exceção com recursos - remover");
+    public boolean remover(Cidade city) {
+        em = JPAUtil.getEntityManager();
+        em.getTransaction().begin();
+        Cidade entity = em.find(Cidade.class, city.getIdCidade());
+        if (entity != null) {
+            em.remove(entity);
+        } else {
+            System.out.println("Deu erro");
         }
+        em.getTransaction().commit();
+        em.close();
         return false;
     }
 
-    public static boolean atualizar(Cidade city) {
-        try (Connection connection = new ConnectionFactory().getConnection();
-                PreparedStatement stmt
-                = connection.prepareStatement(CidadeSQLs.ATUALIZAR.getSql());) {
-            System.out.println("SQL = " + CidadeSQLs.ATUALIZAR.getSql());
-            System.out.println("Conexão aberta!");
-            stmt.setString(1, city.getNome());
-            stmt.setString(2, city.getEstado());
-            stmt.setDouble(3, city.getDistancia());
-            stmt.setInt(4, city.getIdCidade());
-            stmt.execute();
-        } catch (SQLException e) {
-            System.out.println("exceção com recursos - atualizar cliente");
-        }
+    public boolean atualizar(Cidade city) {
+        em = JPAUtil.getEntityManager();
+        em.getTransaction().begin();
+        em.merge(city);
+        em.getTransaction().commit();
+        em.close();
         return false;
     }
 
-    public static List<Cidade> getLista() {
-        List<Cidade> lista = new LinkedList<>();
-        try (Connection connection = new ConnectionFactory().getConnection();
-                PreparedStatement stmt
-                = connection.prepareStatement(CidadeSQLs.LISTAR_TODOS.getSql());) {
-            System.out.println("Conexão aberta!");
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                int idCidade = rs.getInt("idCidade");
-                String nome = rs.getString("nome");
-                String estado = rs.getString("estado");
-                Double distancia = rs.getDouble("distancia");
-                lista.add(new Cidade(idCidade, nome, estado, distancia));
-            }
-            return lista;
-        } catch (SQLException e) {
-            System.out.println("Exceção SQL - Listar Excessão");
-        } catch (Exception e) {
-            System.out.println("Exceção no código!");
-        }
-        return null;
+    public  List<Cidade> getLista() {
+        em = JPAUtil.getEntityManager();
+        TypedQuery<Cidade> query;
+        query = em.createQuery(
+                "SELECT p FROM Cidade p",
+                Cidade.class);
+        List<Cidade> cidades = query.getResultList();
+        em.close();
+        return cidades;
     }
 }
